@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Definimos __filename y __dirname usando import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = Router();
 
@@ -8,7 +13,7 @@ const router = Router();
 const cartsFilePath = path.join(__dirname, 'carts.json');
 const productsFilePath = path.join(__dirname, 'products.json');
 
-// Función para leer los carritos desde el archivo JSON
+// Funciones de lectura y escritura de archivos (sin cambios)
 const readCarts = () => {
     if (!fs.existsSync(cartsFilePath)) {
         return [];
@@ -17,18 +22,17 @@ const readCarts = () => {
     return JSON.parse(data);
 };
 
-// Función para escribir los carritos al archivo JSON
 const writeCarts = (carts) => {
     fs.writeFileSync(cartsFilePath, JSON.stringify(carts, null, 2), 'utf-8');
 };
 
-// Función para generar un ID único
+// Generación de ID único (sin cambios)
 const generateUniqueId = (items) => {
     const lastItem = items[items.length - 1];
     return lastItem ? lastItem.id + 1 : 1;
 };
 
-// Ruta raíz POST / que crea un nuevo carrito
+// Rutas del router (sin cambios)
 router.post('/', (req, res) => {
     const carts = readCarts();
     const newCart = {
@@ -40,7 +44,6 @@ router.post('/', (req, res) => {
     res.status(201).json(newCart);
 });
 
-// Ruta GET /:cid que lista los productos del carrito con el id proporcionado
 router.get('/:cid', (req, res) => {
     const { cid } = req.params;
     const carts = readCarts();
@@ -51,7 +54,6 @@ router.get('/:cid', (req, res) => {
     res.json(cart.products);
 });
 
-// Ruta POST /:cid/product/:pid que agrega un producto al carrito proporcionado
 router.post('/:cid/product/:pid', (req, res) => {
     const { cid, pid } = req.params;
     const carts = readCarts();

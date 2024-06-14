@@ -2,14 +2,19 @@ import { Router } from 'express';
 import fs from 'fs';
 import path from 'path';
 import multer from 'multer';
+import { fileURLToPath } from 'url';
+
+// Definimos __filename y __dirname usando import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = Router();
 const uploader = multer();
 
-// Ruta al archivo JSON que usaremos como base de datos
+// Ruta al archivo JSON que usaremos como base de datos para los productos
 const productsFilePath = path.join(__dirname, 'products.json');
 
-// Función para leer los productos desde el archivo JSON
+// Funciones de lectura y escritura de archivos (sin cambios)
 const readProducts = () => {
     if (!fs.existsSync(productsFilePath)) {
         return [];
@@ -23,14 +28,14 @@ const writeProducts = (products) => {
     fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2), 'utf-8');
 };
 
-// Función para generar un ID único
+// Generación de ID único (sin cambios)
 const generateUniqueId = () => {
     const products = readProducts();
     const lastProduct = products[products.length - 1];
     return lastProduct ? lastProduct.id + 1 : 1;
 };
 
-// Ruta raíz GET / que lista los productos con una limitación opcional
+// Rutas del router (sin cambios)
 router.get('/', (req, res) => {
     const limit = parseInt(req.query.limit, 10);
     const products = readProducts();
